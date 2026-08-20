@@ -1,0 +1,480 @@
+{
+	"info": {
+		"_postman_id": "hr-leave-approval-api-collection",
+		"name": "HR Leave Management System API",
+		"description": "Production-Grade HR Leave & Approval Management System API collection including Authentication, Employee Management, Leave Types, Holiday Calendar, Leave Requests, Approvals, Rejections, Cancellations, Audit Logs, Dashboard Metrics, and Sync Integration API.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"employee@company.com\",\n  \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Authenticated User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Dashboard & Metrics",
+			"item": [
+				{
+					"name": "Get Dashboard Metrics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/dashboard",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"dashboard"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Leave Requests",
+			"item": [
+				{
+					"name": "List Leave Requests (Filtered & Paginated)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/leave-requests?status=PENDING&page=1&per_page=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"leave-requests"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "PENDING"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "per_page",
+									"value": "10"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Calculate Working Days (Backend Calculator)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"from_date\": \"2026-08-20\",\n  \"to_date\": \"2026-08-25\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/leave-requests/calculate-days",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"leave-requests",
+								"calculate-days"
+							]
+						}
+					}
+				},
+				{
+					"name": "Apply for Leave",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"leave_type_id\": 1,\n  \"from_date\": \"2026-08-20\",\n  \"to_date\": \"2026-08-25\",\n  \"reason\": \"Personal annual leave request\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/leave-requests",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"leave-requests"
+							]
+						}
+					}
+				},
+				{
+					"name": "Manager Approval Stage",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/leave-requests/1/manager-approve",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"leave-requests",
+								"1",
+								"manager-approve"
+							]
+						}
+					}
+				},
+				{
+					"name": "HR Approval Stage (Deducts Balance)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/leave-requests/1/hr-approve",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"leave-requests",
+								"1",
+								"hr-approve"
+							]
+						}
+					}
+				},
+				{
+					"name": "Reject Leave Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rejection_reason\": \"Project deadlines require presence during selected dates.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/leave-requests/1/reject",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"leave-requests",
+								"1",
+								"reject"
+							]
+						}
+					}
+				},
+				{
+					"name": "Cancel Leave Request (Restores Balance)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/leave-requests/1/cancel",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"leave-requests",
+								"1",
+								"cancel"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Integration API",
+			"item": [
+				{
+					"name": "Employee Sync Endpoint",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"employee_code\": \"EMP005\",\n  \"name\": \"Sarah Jenkins\",\n  \"email\": \"sarah@company.com\",\n  \"department\": \"Finance\",\n  \"designation\": \"Financial Analyst\",\n  \"manager_code\": \"EMP003\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/integration/employee",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"integration",
+								"employee"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Employee Management (HR/Admin)",
+			"item": [
+				{
+					"name": "List Employees",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/employees",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"employees"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Employee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"employee_code\": \"EMP006\",\n  \"name\": \"David Miller\",\n  \"email\": \"david@company.com\",\n  \"role\": \"EMPLOYEE\",\n  \"department\": \"IT\",\n  \"designation\": \"Backend Developer\",\n  \"manager_id\": 3,\n  \"joining_date\": \"2024-03-01\",\n  \"status\": \"ACTIVE\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/employees",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"employees"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Leave Types (HR/Admin)",
+			"item": [
+				{
+					"name": "List Leave Types",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/leave-types",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"leave-types"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Holidays (HR/Admin)",
+			"item": [
+				{
+					"name": "List Holidays",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/holidays",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"holidays"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Audit Logs (HR/Admin)",
+			"item": [
+				{
+					"name": "List Audit Logs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/audit-logs",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"audit-logs"
+							]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000"
+		}
+	]
+}
